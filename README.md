@@ -31,20 +31,16 @@
 
 Создайте файл `.env` в корне проекта:
 
-```
-DB_HOST=postgres
-DB_PORT=5432
-DB_USER=your_user
-DB_PASSWORD=your_password
-DB_NAME=url_shortener
-
-GOOSE_DRIVER=postgres
-GOOSE_MIGRATION_DIR=/migrations
-```
+```bash
+  cp .env.example
+  ```
 
 ### Команды для запуска
 
 1. Клонируйте репозиторий и перейдите в директорию проекта.
+```bash
+  git clone https://github.com/Komilov31/url-shortner
+```
 2. Настройте файл `.env`.
 3. Запустите сервисы:
 

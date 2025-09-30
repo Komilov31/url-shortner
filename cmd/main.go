@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/Komilov31/url-shortener/cmd/app"
+	_ "github.com/Komilov31/url-shortener/docs"
 )
 
 // @title URL Shortener API
