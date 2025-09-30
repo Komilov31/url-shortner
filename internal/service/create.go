@@ -1,9 +1,11 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Komilov31/url-shortener/internal/model"
+	"github.com/Komilov31/url-shortener/internal/repository"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -15,21 +17,25 @@ func (s *Service) CreateShortUrl(url model.Url) (*model.Url, error) {
 		return nil, fmt.Errorf("could not get value from redis: %w", err)
 	}
 
+	var urlInfo *model.Url
 	if err == redis.Nil {
-		maxAttempts := 5
-		for i := 0; i < maxAttempts; i++ {
+		for {
 			url.ShortUrl = generateShortLink()
-			urlInfo, err := s.storage.CreateShortUrl(url)
-			if err == nil {
-				return urlInfo, nil
+			urlInfo, err = s.storage.CreateShortUrl(url)
+			short_url = urlInfo.ShortUrl
+			if err != nil && !errors.Is(err, repository.ErrUniqueConstraint) {
+				return nil, err
 			}
+
+			if errors.Is(err, repository.ErrUniqueConstraint) {
+				continue
+			}
+			break
 		}
-		return nil, err
 	}
 
-	var urlInfo model.Url
 	urlInfo.Url = url.Url
 	urlInfo.ShortUrl = short_url
 
-	return &urlInfo, nil
+	return urlInfo, nil
 }

@@ -33,17 +33,21 @@ func (s *Service) GetUrlByShort(short_url string, redirectInfo model.RedirectInf
 
 	}
 
+	var urlInfo *model.Url
 	if err == redis.Nil {
-		return s.storage.GetUrlByShort(short_url, redirectInfo)
+		urlInfo, err = s.storage.GetUrlByShort(short_url, redirectInfo)
+		url = urlInfo.Url
+		if err != nil {
+			return nil, err
+		}
 	}
-
-	var urlInfo model.Url
-	urlInfo.ShortUrl = short_url
-	urlInfo.Url = url
 
 	if err := s.storage.CreateRedirectInfo(redirectInfo); err != nil {
 		return nil, err
 	}
 
-	return &urlInfo, nil
+	urlInfo.ShortUrl = short_url
+	urlInfo.Url = url
+
+	return urlInfo, nil
 }

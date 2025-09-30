@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 
-	_ "github.com/Komilov31/url-shortener/docs"
 	"github.com/Komilov31/url-shortener/internal/cache/redis"
 	"github.com/Komilov31/url-shortener/internal/config"
 	"github.com/Komilov31/url-shortener/internal/handler"
@@ -32,6 +31,7 @@ func Run() error {
 	if err != nil {
 		log.Fatal("could not init db: " + err.Error())
 	}
+
 	repository := repository.New(db)
 	cache := redis.New()
 	service := service.New(repository, cache)
