@@ -41,16 +41,6 @@ func (r *Repository) GetUrlByShort(short_url string, redirectInfo model.Redirect
 		return nil, ErrAliasNotFound
 	}
 
-	query = `INSERT INTO redirect_analytics(short_url, user_agent) VALUES ($1, $2);`
-	_, err = tx.Exec(
-		query,
-		redirectInfo.ShortUrl,
-		redirectInfo.UserAgent,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("could not insert redirect info to db: %w", err)
-	}
-
 	if err := tx.Commit(); err != nil {
 		return nil, fmt.Errorf("could not commit transaction: %w", err)
 	}
