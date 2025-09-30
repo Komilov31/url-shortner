@@ -37,6 +37,6 @@ func (h *Handler) CreateShortUrl(c *ginext.Context) {
 		})
 	}
 
-	zlog.Logger.Info().Msg("successfully handled GET request: " + urlInfo.Url)
+	zlog.Logger.Info().Msg("successfully handled GET request and created short url for url")
 	c.JSON(http.StatusOK, urlInfo)
 }
